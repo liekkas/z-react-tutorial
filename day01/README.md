@@ -8,7 +8,7 @@
 ## 参考文档
 >* [react入门](https://facebook.github.io/react/docs/getting-started.html)
 >* [Babel手册](https://github.com/thejameskyle/babel-handbook)
->* [webpack hmr教程]((http://andrewhfarmer.com/webpack-hmr-tutorial/))
+>* [webpack hmr教程](http://andrewhfarmer.com/webpack-hmr-tutorial/)
 
 ## package的依赖关系说明:
 
