@@ -6,6 +6,8 @@ react教程
 ##30天学习
 >* day01:搭建一个最简单的react+babel+webpack项目
     知识点:webpack babel react es2015 hmr
+>* day02:优化框架架构,区分开发模式和生产模式
+    知识点:开发模式 生产模式 webpack loaders/plugins
 
 ##新手村任务
 1. [如何学习react?](https://github.com/petehunt/react-howto/blob/master/README-zh.md)
