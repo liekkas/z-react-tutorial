@@ -15,7 +15,6 @@
 ```
  "devDependencies": {
     //-------babel---------
-    "babel-cli": "^6.6.5", // babel命令行工具,提供babel-node命令这样能让后端也用上es2015
     //针对webpack,只需要安装babel-core babel-loader
     "babel-core": "^6.7.4",
     "babel-loader": "^6.2.4",
