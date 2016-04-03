@@ -1,0 +1,25 @@
+{
+  "parser"  : "babel-eslint",
+  "extends" : ["airbnb"],
+  "plugins" : [
+    "flow-vars"
+  ],
+  "env"     : {
+    "browser" : true
+  },
+  "globals" : {
+    "Action"       : false,
+    "__DEV__"      : false,
+    "__PROD__"     : false,
+    "__BASENAME__" : false
+  },
+  "rules": {
+    "spaced-comment": [2, "never"],
+    "semi" : [2, "never"],
+    "max-len": [2, 120, 2],
+
+    "jsx-quotes": [2, "prefer-single"], //jsx属性使用单引号
+    "flow-vars/define-flow-type": 1,
+    "flow-vars/use-flow-type": 1
+  }
+}
