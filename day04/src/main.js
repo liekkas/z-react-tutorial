@@ -4,7 +4,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
-import './styles/antd.css'
+import './styles/antd/index.less'
 
 ReactDOM.render(<App foo='Hi Inclined.Z' />,
   document.getElementById('root')
