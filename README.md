@@ -10,6 +10,8 @@ react教程
     * 知识点:开发模式 生产模式 webpack loaders/plugins
 >* day03:eslint规范
     * 知识点:eslint代码规范
+>* day04:antd集成
+    * 知识点:antd
 
 ##新手村任务
 1. [如何学习react?](https://github.com/petehunt/react-howto/blob/master/README-zh.md)
