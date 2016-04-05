@@ -12,6 +12,8 @@ react教程
     * 知识点:eslint代码规范
 >* day04:antd集成
     * 知识点:antd
+>* day05:echarts集成
+    * 知识点:echarts
 
 ##新手村任务
 1. [如何学习react?](https://github.com/petehunt/react-howto/blob/master/README-zh.md)
