@@ -14,6 +14,8 @@ react教程
     * 知识点:antd
 >* day05:echarts集成
     * 知识点:echarts
+>* day06:routing
+    * 知识点:react-router history
 
 ##新手村任务
 1. [如何学习react?](https://github.com/petehunt/react-howto/blob/master/README-zh.md)
