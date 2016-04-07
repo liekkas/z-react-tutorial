@@ -1,0 +1,30 @@
+$theme-color: #c23531;
+
+body {
+  //background: url("static/bg.jpg");
+  //background: url("static/black_bg.jpg");
+  //background-repeat:no-repeat;
+  //background-size:cover;
+  //color: white;
+  font-family: 微软雅黑;
+  overflow-x:hidden;
+  background-color: #1F222A;
+}
+
+::-webkit-scrollbar
+{
+  width: 12px;  /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track
+{
+  //background: rgba(0, 0, 0, 0.5);
+  background-color: #1F222A;
+}
+
+::-webkit-scrollbar-thumb
+{
+  //background: rgba(0, 0, 0, 0.6);
+  background-color: #242930;
+}
