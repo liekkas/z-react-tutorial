@@ -18,7 +18,8 @@ react教程
     * 知识点:react-router history
 >* day07:A Demo
     * 知识点:结合echarts和antd一个呈现demo
-
+>* day08:Show Demo(1)
+    
 ##新手村任务
 1. [如何学习react?](https://github.com/petehunt/react-howto/blob/master/README-zh.md)
    遵循这份建议,你能少走弯路
