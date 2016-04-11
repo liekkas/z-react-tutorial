@@ -3,20 +3,91 @@
  */
 import React, { PropTypes } from 'react'
 import ECharts from 're-echarts'
+import Radio from 'antd/lib/radio'
+const RadioGroup = Radio.Group
+const RadioButton = Radio.Button
+import { getSingleOption, getMultiOption, getOrderOption, getPieOption, getRadarOption } from '../../tools/service'
+
+const styles = {
+  root: {
+    position: 'relative',
+    backgroundColor: '#242930',
+    marginBottom: '15px',
+    marginRight: '15px',
+    height: '400px',
+  },
+  kpiGroup: {
+    position: 'absolute',
+    top: '10px',
+    left: '10px',
+  },
+}
+
+function parseTableData(v,kpi,config) {
+//  console.log('>>> Chart:parseTableData',kpi)
+  if (_.isEmpty(v)) return {}
+
+  const labels = _.map(v,(config.labelField));
+  if (config.legends && config.legends.length > 0) {
+    const dataArr = []
+    const legendField = config.legendField
+    for (let i = 0; i < config.legends.length; i ++) {
+      dataArr.push(_.filter(v,{ legendField: config.legends[i] }))
+    }
+    getMultiOption(labels,dataArr,config.legends,kpi.unit,kpi.cn)
+  } else {
+    const data = _.map(v,kpi.en);
+    if (_.isEmpty(data)) {
+      console.log('>>> 后台数据字段和前台对不上,字段为:',kpi.en)
+      return {}
+    }
+    return getSingleOption(labels,data,kpi.unit,kpi.cn)
+  }
+}
 
 class KpiChart extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      foo: 'bar',
+      currentKpi: props.kpis[0],
+      option: parseTableData(this.props.tableData, props.kpis[0], this.props.config),
+    }
+  }
+
+  onKpiChange(e) {
+    const kpi = _.find(this.props.kpis, {en: e.target.value})
+    this.setState({currentKpi: kpi, option: parseTableData(this.props.tableData, kpi, this.props.config)})
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if ( this.props.subModule !== nextProps.subModule ) {
+      this.setState({
+        currentKpi: nextProps.kpis[0],
+        option: parseTableData(nextProps.tableData, nextProps.kpis[0], nextProps.config)
+      })
+    } else if (!_.isEqual(nextProps.tableData,this.props.tableData)) {
+      this.setState({
+        option: parseTableData(nextProps.tableData, this.state.currentKpi, nextProps.config)
+      })
     }
   }
 
   render() {
-    const { foo } = this.props
+    const { kpis } = this.props
+    const { currentKpi } = this.state
+
     return (
-      <div>
-        {foo}
+      <div style={styles.root}>
+        <ECharts option={this.state.option}/>
+        <div style={styles.kpiGroup}>
+          <RadioGroup onChange={(e) => this.onKpiChange(e)} theme='dark'
+                      value={currentKpi.en}>
+            {
+              kpis.map(({en, cn}, index) =>
+                <RadioButton key={index} value={en}>{cn}</RadioButton>)
+            }
+          </RadioGroup>
+        </div>
       </div>
     )
   }
@@ -24,6 +95,9 @@ class KpiChart extends React.Component {
 
 KpiChart.propTypes = {
   kpis: PropTypes.array.isRequired,
+  subModule: PropTypes.string.isRequired,
+  tableData: PropTypes.array,
+  config: PropTypes.object,
 }
 
 export default KpiChart
