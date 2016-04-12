@@ -7,13 +7,13 @@ import Radio from 'antd/lib/radio'
 const RadioGroup = Radio.Group
 const RadioButton = Radio.Button
 import { getSingleOption, getMultiOption, getOrderOption, getPieOption, getRadarOption } from '../../tools/service'
+import { Menus } from '../../constants/Consts'
 
 const styles = {
   root: {
     position: 'relative',
     backgroundColor: '#242930',
     marginBottom: '15px',
-    marginRight: '15px',
     height: '400px',
   },
   kpiGroup: {
@@ -32,14 +32,27 @@ function parseTableData(v,kpi,config) {
     const dataArr = []
     const legendField = config.legendField
     for (let i = 0; i < config.legends.length; i ++) {
-      dataArr.push(_.filter(v,{ legendField: config.legends[i] }))
+      dataArr.push(_.map(_.filter(v,{ [legendField]: config.legends[i] }),kpi.en))
     }
-    getMultiOption(labels,dataArr,config.legends,kpi.unit,kpi.cn)
+    return getMultiOption(labels,dataArr,config.legends,kpi.unit,kpi.cn)
   } else {
     const data = _.map(v,kpi.en);
     if (_.isEmpty(data)) {
       console.log('>>> 后台数据字段和前台对不上,字段为:',kpi.en)
       return {}
+    }
+
+    //根据不同的模块,使用不同的图表
+    switch (config.module) {
+      case Menus.mapping.lbChannelOrder.en:
+        let datas = []
+        for (let i = 0; i < v.length; i++) {
+          datas.push({
+            value: v[i][kpi.en],
+            rank: v[i].uid,
+          })
+        }
+        return getOrderOption(labels,datas,kpi.unit,kpi.cn)
     }
     return getSingleOption(labels,data,kpi.unit,kpi.cn)
   }
@@ -60,12 +73,7 @@ class KpiChart extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if ( this.props.subModule !== nextProps.subModule ) {
-      this.setState({
-        currentKpi: nextProps.kpis[0],
-        option: parseTableData(nextProps.tableData, nextProps.kpis[0], nextProps.config)
-      })
-    } else if (!_.isEqual(nextProps.tableData,this.props.tableData)) {
+    if (!_.isEqual(nextProps.tableData,this.props.tableData)) {
       this.setState({
         option: parseTableData(nextProps.tableData, this.state.currentKpi, nextProps.config)
       })
@@ -78,7 +86,7 @@ class KpiChart extends React.Component {
 
     return (
       <div style={styles.root}>
-        <ECharts option={this.state.option}/>
+        <ECharts option={this.state.option} notMerge />
         <div style={styles.kpiGroup}>
           <RadioGroup onChange={(e) => this.onKpiChange(e)} theme='dark'
                       value={currentKpi.en}>
