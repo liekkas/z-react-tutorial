@@ -3,8 +3,9 @@ import { IndexLink, Link ,browserHistory } from 'react-router'
 import style from './style.scss'
 const datas = [
   { name: '首页', key: 'home' },
-  { name: '模块A', key: 'moduleA' },
-  { name: '概况', key: 'tvOverview' },
+  { name: '电视概况', key: 'tvOverview' },
+  { name: '直播业务', key: 'liveBroadcast' },
+  { name: '点播业务', key: 'demandBroadcast' },
 ]
 
 class Header extends React.Component {
