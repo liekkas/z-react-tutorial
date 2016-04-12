@@ -7,13 +7,6 @@ import styles from '../styles.scss'
 import { Menus } from '../../constants/Consts'
 
 class TVOverview extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      module: 'bar',
-    }
-  }
-
   render() {
     const { module } = this.props
     return (

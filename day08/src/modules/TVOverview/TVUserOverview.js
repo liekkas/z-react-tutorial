@@ -3,30 +3,47 @@
  */
 import React, { PropTypes } from 'react'
 import styles from '../styles.scss'
+import { DataGrid, KpiChart, SearchBox } from '../../components'
+import { fetchData, getInitInfo } from '../helper'
+import { Menus } from '../../constants/Consts'
+
+const MODULE = Menus.mapping.tvUserOverview
+const INIT_INFO = getInitInfo(MODULE.en)
+
 class TVUserOverview extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      foo: 'bar',
+      result: {}, //后台获取的结果值
     }
   }
 
+  componentDidMount() {
+    fetchData(this,MODULE.en,INIT_INFO.restParam)
+  }
+
+  onSearch(v) {
+    fetchData(this,MODULE.en,v)
+  }
+
   render() {
-    const { foo } = this.props
+    const { result } = this.state
     return (
       <div className={styles.moduleContent}>
-        {foo}
-        <div>sssss</div>
+        <SearchBox param={INIT_INFO.searchParam}
+                   onSearch={(v) => this.onSearch(v)}/>
+
+        <KpiChart subModule={MODULE.en}
+                  kpis={INIT_INFO.kpis}
+                  tableData={result.data}
+                  config={result.config} />
+
+        <DataGrid title={MODULE.cn}
+                  columns={INIT_INFO.columns}
+                  datas={result.data} />
       </div>
     )
   }
-}
-
-TVUserOverview.propTypes = {
-  foo: PropTypes.string.isRequired,
-}
-TVUserOverview.defaultProps = {
-  foo: 'bar',
 }
 
 export default TVUserOverview
