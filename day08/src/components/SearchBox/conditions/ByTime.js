@@ -108,6 +108,7 @@ class ByTime extends React.Component {
                      value={this.state.start}
                      placeholder="开始日期"
                      onChange={(v) => this.onStartChange(v)} />
+         &nbsp;&nbsp;
          <TimePicker defaultValue="00:00" disabledMinutes={disabledMinutes}
                      format="HH:mm" hideDisabledOptions />
        </div>
@@ -157,26 +158,28 @@ class ByTime extends React.Component {
   }
 
   getValue() {
+    let base = { dateType: this.state.dateType }
     switch (this.state.dateType) {
       case 'D':
-        return {
-          dateType: 'D',
-          start: dateFormat(this.state.start,'yyyymmdd'),
-          end: dateFormat(this.state.end,'yyyymmdd'),
+        base.start = dateFormat(this.state.start,'yyyymmdd')
+        if (this.props.rangeMode) {
+          base.end = dateFormat(this.state.end,'yyyymmdd')
         }
+        break
       case 'M':
-        return {
-          dateType: 'M',
-          start: dateFormat(this.state.start,'yyyymm'),
-          end: dateFormat(this.state.end,'yyyymm'),
+        base.start = dateFormat(this.state.start,'yyyymm')
+        if (this.props.rangeMode) {
+          base.end = dateFormat(this.state.end,'yyyymm')
         }
+        break
       case 'T':
-        return {
-          dateType: 'T',
-          start: dateFormat(this.state.start,'yyyymmdd') + '-0',
-          end: dateFormat(this.state.start,'yyyymmdd') + '-23',
+        base.start = dateFormat(this.state.start,'yyyymmdd') + '-0'
+        if (this.props.rangeMode) {
+          base.end = dateFormat(this.state.start,'yyyymmdd') + '-23'
         }
+        break
     }
+    return base
   }
 
   render() {
