@@ -11,8 +11,7 @@ const styles = {
     position: 'relative',
     backgroundColor: '#242930',
     marginBottom: '15px',
-    marginRight: '15px',
-    height: '400px',
+//    height: '400px',
   },
   titleStyle: {
     width: '100%',
@@ -27,6 +26,7 @@ const styles = {
     margin: '10px 20px 0px',
   },
   pagination: {
+    marginTop: '10px',
     right: '10px',
     float: 'right',
   }
@@ -38,6 +38,7 @@ class DataGrid extends React.Component {
     this.state = {
       pageSize: props.pageSize,
       current: 1,
+      sorter: {},
     }
   }
 
@@ -52,37 +53,41 @@ class DataGrid extends React.Component {
   }
 
   componentWillReceiveProps(nextProps, nextState) {
-//    console.log('>>> DataGrid:componentWillReceiveProps', nextProps)
-    if (!shallowCompare(this, nextProps, nextState)) {
+    if (shallowCompare(this, nextProps, nextState)) {
       this.setState({pageSize:10, current:1})
     }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-//    console.log('>>> DataGrid:componentDidUpdate', prevProps)
   }
 
   showTotal(total) {
     return `共 ${total} 条`;
   }
 
+  onTableChange(pagination, filters, sorter) {
+    // 点击分页、筛选、排序时触发
+//    console.log('各类参数是', pagination, filters, sorter);
+    this.setState({sorter})
+  }
+
   render() {
     const { columns, datas, title } = this.props
-    const { pageSize, current } = this.state
+    const { pageSize, current, sorter } = this.state
 
-//    console.log('>>> DataGrid ', pageSize, current, columns, datas)
+    let parareDatas = datas
+    if (sorter.hasOwnProperty('field')) {
+      parareDatas = _.orderBy(datas, [sorter.field], [sorter.order === 'descend' ? 'desc' : 'asc']);
+    }
 
     const start = (current - 1) * pageSize
-    const end = Math.min(current * pageSize, datas.length)
+    const end = Math.min(current * pageSize, parareDatas.length)
     let renderData = []
     for (let i = start; i < end; i++) {
-      renderData.push(datas[i])
+      renderData.push(parareDatas[i])
     }
 
     return (
       <div style={styles.root}>
         <div style={styles.titleStyle}>{title} - 列表</div>
-        <Table dataSource={renderData}
+        <Table dataSource={renderData} onChange={(a,b,c) => this.onTableChange(a,b,c)}
                useFixedHeader={true} rowKey={item => item.uid}
                columns={columns} size="middle"
                style={styles.table} pagination={false}/>
