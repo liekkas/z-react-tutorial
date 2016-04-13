@@ -9,13 +9,11 @@ const styles = {
   root: {
     width: '100%',
     height: '100%',
-//    backgroundColor: 'whitesmoke',
   },
   content: {
     width: '100%',
     height: '100%',
     paddingTop: '5vh',
-//    backgroundColor: '#1F222A',
   }
 }
 

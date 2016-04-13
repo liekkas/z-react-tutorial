@@ -27,12 +27,16 @@ function parseTableData(v,kpi,config) {
 //  console.log('>>> Chart:parseTableData',kpi)
   if (_.isEmpty(v)) return {}
 
-  const labels = _.map(v,(config.labelField));
+  let labels //坐标轴文字
   if (config.legends && config.legends.length > 0) {
     const dataArr = []
     const legendField = config.legendField
     for (let i = 0; i < config.legends.length; i ++) {
-      dataArr.push(_.map(_.filter(v,{ [legendField]: config.legends[i] }),kpi.en))
+      const filterArr = _.filter(v,{ [legendField]: config.legends[i] })
+      if (i == 0) {
+        labels = _.map(filterArr, config.labelField)
+      }
+      dataArr.push(_.map(filterArr,kpi.en))
     }
     return getMultiOption(labels,dataArr,config.legends,kpi.unit,kpi.cn)
   } else {
@@ -42,9 +46,13 @@ function parseTableData(v,kpi,config) {
       return {}
     }
 
+    labels = _.map(v,(config.labelField))
     //根据不同的模块,使用不同的图表
     switch (config.module) {
       case Menus.mapping.lbChannelOrder.en:
+      case Menus.mapping.lbShowsOrder.en:
+      case Menus.mapping.dbMovieOrder.en:
+      case Menus.mapping.dbTVPlayOrder.en:
         let datas = []
         for (let i = 0; i < v.length; i++) {
           datas.push({

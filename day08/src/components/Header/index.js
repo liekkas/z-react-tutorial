@@ -11,7 +11,6 @@ const datas = [
 class Header extends React.Component {
 
   onClick(name) {
-    console.log('>>> Header.onClick',name)
     this.props.moduleChange(name)
   }
 

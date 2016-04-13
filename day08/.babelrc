@@ -1,6 +1,6 @@
 {
   "presets": ["es2015", "react"],
-  "plugins": ["antd"],
+  "plugins": ["antd", "transform-object-rest-spread"],
   "env": {
     "development": {
       "presets": ["react-hmre"]

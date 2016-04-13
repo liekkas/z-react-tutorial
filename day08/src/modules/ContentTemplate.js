@@ -13,7 +13,7 @@ let MODULE, INIT_INFO
 /**
  * 内容模板
  */
-class Template extends React.Component {
+class ContentTemplate extends React.Component {
   constructor(props) {
     super(props)
 
@@ -57,8 +57,8 @@ class Template extends React.Component {
   }
 }
 
-Template.propTypes = {
+ContentTemplate.propTypes = {
   subModule: PropTypes.string.isRequired,
 }
 
-export default Template
+export default ContentTemplate

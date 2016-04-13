@@ -6,10 +6,10 @@ import { SideNav } from '../../components'
 import styles from '../styles.scss'
 import { Menus } from '../../constants/Consts'
 
-const MODULE = Menus.mapping.liveBroadcast.en
-const DEFAULT_SUB_MODULE = Menus.mapping.lbUserOverview.en
+const MODULE = Menus.mapping.demandBroadcast.en
+const DEFAULT_SUB_MODULE = Menus.mapping.dbUserOverview.en
 
-export default class LiveBroadcast extends React.Component {
+export default class DemandBroadcast extends React.Component {
   render() {
     return (
       <div className={styles.moduleRoot}>

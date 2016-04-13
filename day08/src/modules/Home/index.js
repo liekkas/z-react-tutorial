@@ -7,8 +7,10 @@ import ECharts from 're-echarts'
 import { mockBarData, mockMapData } from '../../tools/mockData'
 import china from '../../china.json'
 import style from './style.scss'
+import {browserHistory} from 'react-router'
 
 echarts.registerMap('china', china)
+const provinces = ['江苏','湖北','安徽','湖南','河北','山东','河南']
 
 class Home extends React.Component {
   constructor(props) {
@@ -24,7 +26,9 @@ class Home extends React.Component {
   }
 
   onMapClicked(item) {
-    console.log('>>> Home.onMapClicked:',item.name)
+//    if (provinces.indexOf(item.name) > -1) {
+//      browserHistory.push('/tvOverview')
+//    }
   }
 
   render() {

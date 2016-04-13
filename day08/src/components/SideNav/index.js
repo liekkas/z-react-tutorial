@@ -36,7 +36,7 @@ class SideNav extends React.Component {
     super(props)
     this.state = {
       openKeys: [props.data[0].key],
-      selectedMenu: props.data[0].key,
+      selectedMenu: props.selectedMenu,
     }
   }
 
@@ -107,7 +107,7 @@ class SideNav extends React.Component {
 
 SideNav.propTypes = {
   data: PropTypes.array.isRequired,
-//  selectedMenu: PropTypes.string.isRequired,
+  selectedMenu: PropTypes.string.isRequired,
   onSubModuleChange: PropTypes.func
 }
 

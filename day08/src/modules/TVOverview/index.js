@@ -6,23 +6,16 @@ import { SideNav } from '../../components'
 import styles from '../styles.scss'
 import { Menus } from '../../constants/Consts'
 
-class TVOverview extends React.Component {
+const MODULE = Menus.mapping.tvOverview.en
+const DEFAULT_SUB_MODULE = Menus.mapping.tvUserOverview.en
+
+export default class TVOverview extends React.Component {
   render() {
-    const { module } = this.props
     return (
       <div className={styles.moduleRoot}>
-        <SideNav data={Menus[module]} />
+        <SideNav data={Menus[MODULE]} selectedMenu={DEFAULT_SUB_MODULE} />
         { this.props.children }
       </div>
     )
   }
 }
-
-TVOverview.propTypes = {
-  module: PropTypes.string.isRequired,
-}
-TVOverview.defaultProps = {
-  module: 'tvOverview',
-}
-
-export default TVOverview

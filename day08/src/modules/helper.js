@@ -7,105 +7,24 @@ import fetch from 'isomorphic-fetch'
 import config from '../../config'
 
 /**
- * 根据模块获取左侧菜单数据源
- * @param module
- * @returns {*[]}
- */
-export function getMenuDatas(module) {
-  return Menus[module]
-}
-
-/**
- * 获取默认菜单项,默认为第一个,如果有子菜单则为子菜单第一项
- * @param module
- */
-export function getDefaultSubMenu(module) {
-  const menu = Menus(module)[0]
-  return menu.subMenus.length > 0 ? menu.subMenus[0].key : menu.key
-}
-
-/**
- * 根据菜单英文名称获取中文名称,用于列表的标题
- * @param subModule
- */
-export function getMenuCnByEn(subModule) {
-  return Menus.mapping[subModule].cn
-}
-
-/**
  * 根据字段和宽度生成表头信息
  * @param field
  * @param width
  */
-function generateColumn(field, width) {
-  return {
+function generateColumn(field, width, useSorter = false) {
+  let result = {
     title: field.cn + (field.unit ? '(' + field.unit + ')' : ''),
     dataIndex: field.en,
     key: field.en,
     width: width + '%',
   }
-}
-
-/**
- * 根据子模块获取搜索框的信息,包括
- * @param subModule
- */
-export function getSearchParam(subModule) {
-  const SubModules = Menus.mapping
-  let param = { dateType: 'D', start: '20150501', end: '20151031', showHour: true }
-  switch(subModule) {
-    //电视概况
-    case SubModules.tvUserOverview.en:
-    case SubModules.lbUserOverview.en:
-    case SubModules.dbUserOverview.en:
-      Object.assign(param,{showHour: false})
-      break
-    case SubModules.tvUserBehave.en:
-    case SubModules.lbUserBehave.en:
-    case SubModules.tvBusinessOverview.en:
-    case SubModules.dbUserBehave.en:
-
-      break
-
-    //直播业务
-    case SubModules.lbcgUserAna.en:
-    case SubModules.lbcgTimeUseAna.en:
-
-      break;
-    case SubModules.lbChannelOrder.en:
-
-      break;
-    case SubModules.lbChannelAna.en:
-
-      break;
-    case SubModules.lbShowsOrder.en:
-
-      break;
-
-    //点播业务
-    case SubModules.maResAvailAna.en:
-
-      break;
-    case SubModules.maShowCenterAna.en:
-
-      break;
-    case SubModules.stUserAna.en:
-
-      break;
-    case SubModules.stTimeUseAna.en:
-
-      break;
-    case SubModules.movieOrder.en:
-
-      break;
-    case SubModules.tvPlayOrder.en:
-
-      break;
-    default:
-      param = { dateType: 'D', start: '20150501', end: '20151031', showHour: true }
-      break;
+  if (useSorter) {
+    result.sorter = function (a, b) {
+      return a[field.en] - b[field.en]
+    }
   }
-  return param
+
+  return result
 }
 
 export function getInitInfo(subModule) {
@@ -168,7 +87,7 @@ export function getInitInfo(subModule) {
       kpis = [FIELDS.用户指数, FIELDS.覆盖率, FIELDS.市占率, FIELDS.户均使用时长]
       temp = [FIELDS.频道名称, FIELDS.排名].concat(kpis)
       columns = _.map(temp, function (item) {
-        return generateColumn(item, 100/temp.length)
+        return generateColumn(item, 100/temp.length, kpis.indexOf(item) > -1)
       })
       restParam = { dateType: 'D', start: '20150501', type: '0' }
       Object.assign(searchParam,{rangeMode: false})
@@ -179,58 +98,69 @@ export function getInitInfo(subModule) {
       columns = _.map(temp, function (item) {
         return generateColumn(item, 100/temp.length)
       })
-      restParam = { dateType: 'D', start: '20150501', end: '20151031', channel1: 'CCTV-1', channel2: '湖南卫视' }
+      restParam = { dateType: 'D', start: '20150501', end: '20151031' }
+      restParam[CONVENTION.NEED_ENCODE_PREFIX + 'channel1'] = 'CCTV-1'
+      restParam[CONVENTION.NEED_ENCODE_PREFIX + 'channel2'] = '湖南卫视'
       break;
     case SubModules.lbShowsOrder.en:
       kpis = [FIELDS.用户指数, FIELDS.覆盖率, FIELDS.市占率, FIELDS.户均使用时长]
       temp = [FIELDS.节目名称, FIELDS.排名, FIELDS.频道名称, FIELDS.播出时间].concat(kpis)
-      columns = _.map(temp, function (item) {
-        return generateColumn(item, 100/temp.length)
+      const widthPct = [16,4,16,12,10,10,10,16]
+      columns = _.map(temp, function (item, index) {
+        return generateColumn(item, widthPct[index], kpis.indexOf(item) > -1)
       })
+      restParam = { dateType: 'D', start: '20150501', type: '0', channel: '' }
+      Object.assign(searchParam,{rangeMode: false})
       break;
 
     //点播业务
-    case SubModules.maResAvailAna.en:
+    case SubModules.dbResAvailAna.en:
       kpis = [FIELDS.节目比重, FIELDS.市占率, FIELDS.覆盖率]
       temp = [FIELDS.日期, FIELDS.节目类型].concat(kpis)
       columns = _.map(temp, function (item) {
         return generateColumn(item, 100/temp.length)
       })
       break;
-    case SubModules.maShowCenterAna.en:
+    case SubModules.dbShowCenterAna.en:
       kpis = [FIELDS.点播时长, FIELDS.市占率]
       temp = [FIELDS.日期, FIELDS.TOP分组].concat(kpis)
       columns = _.map(temp, function (item) {
         return generateColumn(item, 100/temp.length)
       })
+      restParam = { dateType: 'D', start: '20150501', type: '0', showType: '1', groupType: '10' }
+      Object.assign(searchParam,{rangeMode: false})
       break;
-    case SubModules.stUserAna.en:
+    case SubModules.dbShowTypeUserAna.en:
       kpis = [FIELDS.用户数, FIELDS.覆盖率, FIELDS.用户指数]
       temp = [FIELDS.日期, FIELDS.节目类型].concat(kpis)
       columns = _.map(temp, function (item) {
         return generateColumn(item, 100/temp.length)
       })
       break;
-    case SubModules.stTimeUseAna.en:
+    case SubModules.dbShowTypeTimeUseAna.en:
       kpis = [FIELDS.点播时长, FIELDS.户均点播时长, FIELDS.市占率]
       temp = [FIELDS.日期, FIELDS.节目类型].concat(kpis)
       columns = _.map(temp, function (item) {
         return generateColumn(item, 100/temp.length)
       })
       break;
-    case SubModules.movieOrder.en:
+    case SubModules.dbMovieOrder.en:
       kpis = [FIELDS.用户指数, FIELDS.覆盖率, FIELDS.市占率, FIELDS.户均使用时长]
       temp = [FIELDS.电影名称, FIELDS.排名].concat(kpis)
       columns = _.map(temp, function (item) {
-        return generateColumn(item, 100/temp.length)
+        return generateColumn(item, 100/temp.length, kpis.indexOf(item) > -1)
       })
+      restParam = { dateType: 'D', start: '20150501' }
+      Object.assign(searchParam,{rangeMode: false})
       break;
-    case SubModules.tvPlayOrder.en:
+    case SubModules.dbTVPlayOrder.en:
       kpis = [FIELDS.用户指数, FIELDS.覆盖率, FIELDS.市占率, FIELDS.户均使用时长]
       temp = [FIELDS.电视剧名称, FIELDS.排名].concat(kpis)
       columns = _.map(temp, function (item) {
-        return generateColumn(item, 100/temp.length)
+        return generateColumn(item, 100/temp.length, kpis.indexOf(item) > -1)
       })
+      restParam = { dateType: 'D', start: '20150501' }
+      Object.assign(searchParam,{rangeMode: false})
       break;
     default:
       kpis = [FIELDS.覆盖用户数, FIELDS.用户数, FIELDS.覆盖率, FIELDS.用户流动率, FIELDS.流入用户数, FIELDS.流出用户数]
@@ -276,11 +206,6 @@ export function fetchData(bind,subModule,params) {
   fetch(config.REST_API_BASE_URL + subModule + parse2Url(params))
     .then(response => response.json())
     .then(function (result) {
-//      const labels = _.map(result,'date');
-//      const datas = _.map(result,bind.state.kpi.value);
-//        console.log('>>> Overview', labels, datas)
-//      const chartData = getSingleOption(labels,datas,bind.state.kpi.unit,bind.state.kpi.label)
-//      bind.setState({ tableData: result, option: chartData, remoteLoading: false })
       bind.setState({ result })
       return result
     })
@@ -290,10 +215,6 @@ export function fetchData(bind,subModule,params) {
 }
 
 export default {
-  getMenuDatas,
-  getDefaultSubMenu,
-  getMenuCnByEn,
   getInitInfo,
   fetchData,
-  getSearchParam,
 }
