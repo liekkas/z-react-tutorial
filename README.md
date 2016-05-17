@@ -11,7 +11,7 @@ react教程
 >* day03:eslint规范
     * 知识点:eslint代码规范
 >* day04:antd集成
-    * 知识点:antd
+    * 知识点:告警风暴测试
 >* day05:echarts集成
     * 知识点:echarts
 >* day06:routing
