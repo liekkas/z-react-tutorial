@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 import { IndexLink, Link ,browserHistory } from 'react-router'
 import style from './style.scss'
+import logo from './logo.png'
+
 const datas = [
   { name: '  首页  ', key: 'home' },
   { name: '  模块A  ', key: 'moduleA' },
@@ -16,6 +18,7 @@ class Header extends React.Component {
   render() {
     return (
       <div className={style.root}>
+        <img src={logo} onClick={() => browserHistory.push('/')} />
         <ui className={style.menu}>
           {
             datas.map(({name, key}, index) =>

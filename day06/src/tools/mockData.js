@@ -1,263 +1,172 @@
 /**
  * Created by liekkas on 16/4/4.
  */
-
-const details = {
-  湖南: [
-    {name: '长沙', value: '57'},
-    {name: '湘潭', value: '21'},
-    {name: '浏阳', value: '20'},
-    {name: '岳阳', value: '19'},
-    {name: '益阳', value: '18'},
-  ],
-  河北: [
-    {name: '唐山', value: '26'},
-    {name: '承德', value: '13'},
-    {name: '沧州', value: '15'},
-    {name: '秦皇岛', value: '34'},
-  ],
-  山东: [
-    {name: '威海', value: '83'},
-  ],
-  河南: [
-    {name: '周口', value: '8'},
-  ]
-}
-
-function getDetail(name) {
-  if (!details.hasOwnProperty(name)) return ''
-
-  const cities = details[name]
-  let result = '<br />----------------<br />'
-  for (let i = 0; i < cities.length; i++) {
-    result += cities[i].name + ': ' + cities[i].value + '万户<br />'
-  }
-  return result
-}
-
-const provinces = ['江苏','湖北','安徽','湖南','河北','山东','河南']
+/**
+ * Created by liekkas on 16/4/4.
+ */
 
 export function mockMapData() {
-
-  const v1 = ['1885','870','447','135','88','83','8']
-  let data = []
-  provinces.map((province,index) =>
-    data.push({name: province, value: v1[index]})
-  )
-
   return {
-    textStyle: {
-      color: '#fff',
+    title : {
+      text: '全国故障投诉情况',
+      subtext: '点击任意省份,右侧图表随之联动',
+      left: 'center'
     },
-    title: {
-      text: '全国电视用户数据资产情况',
-      left: 'center',
-      top: 30,
-      textStyle: {
-        color: '#c0d5ff',
-        fontSize: 26
-      }
-    },
-    visualMap: {
-      show: true,
-      inRange: {
-        color: ['#ffb74d', '#e94f26'],
-        symbolSize: [30, 100]
-      },
-      min: 0,
-      max: 2000,
-      formatter: '{value}万户',
-      bottom: 30,
-      right: 30,
-      text: ['高', '低'],           // 文本，默认为数值文本
-      calculable: true,
-      textStyle: {
-        color: '#c0d5ff',
-//      fontSize: 26
-      }
-    },
-    tooltip: {
-      padding: 10,
-      trigger: 'item',
-      formatter: (item) => (isNaN(item.value)
-        ? null
-        : '有线电视用户数<br />' + item.name + '省: ' + item.value + '万户' + getDetail(item.name)),
+    tooltip : {
+      trigger: 'item'
     },
     legend: {
-      show: false,
+      orient: 'vertical',
+      left: 'left',
+      data:['白天','晚上']
     },
-    series: [
+    visualMap: {
+      min: 0,
+      max: 2500,
+      left: 'left',
+      top: 'bottom',
+      text:['高','低'],           // 文本，默认为数值文本
+      calculable : true
+    },
+    series : [
       {
-        name: '有线电视用户数',
+        name: '白天',
         type: 'map',
-//        top: '248',
-//        left: '730',
-//      right: '20%',
-//        bottom: '178',
         mapType: 'china',
-        z: 3,
-        zlevel: 3,
-        label: {
-          normal: {
-            show: true,
-            textStyle: {
-              color: '#B8E6FE'
-            }
-          },
-          emphasis: {
-            show: true,
-            textStyle: {
-              color: '#B8E6FE',
-              fontWeight: 'bold',
-            }
-          },
-
-        },
         roam: false,
-        itemStyle: {
-          normal: {
-            areaColor: '#6cA9EB',
-            borderColor: '#447cca',
-            borderWidth: 1,
-          },
-          emphasis: {
-            areaColor: '#03a9f4',
-            shadowColor: '#039be5',
-            borderColor: '#FFF',
-            shadowBlur: 10,
-            shadowOffsetX: 10,
-            shadowOffsetY: 10,
-            opacity: 0.8,
-          }
+        itemStyle:{
+          normal:{label:{show:true}},
+          emphasis:{label:{show:true}}
         },
-
-        data
+        data:[
+          {name: '北京',value: Math.round(Math.random() * 1000)},
+          {name: '天津',value: Math.round(Math.random() * 1000)},
+          {name: '上海',value: Math.round(Math.random() * 1000)},
+          {name: '重庆',value: Math.round(Math.random() * 1000)},
+          {name: '河北',value: Math.round(Math.random() * 1000)},
+          {name: '河南',value: Math.round(Math.random() * 1000)},
+          {name: '云南省',value: Math.round(Math.random() * 1000)},
+          {name: '辽宁',value: Math.round(Math.random() * 1000)},
+          {name: '黑龙江',value: Math.round(Math.random() * 1000)},
+          {name: '湖南',value: Math.round(Math.random() * 1000)},
+          {name: '安徽',value: Math.round(Math.random() * 1000)},
+          {name: '山东',value: Math.round(Math.random() * 1000)},
+          {name: '新疆',value: Math.round(Math.random() * 1000)},
+          {name: '江苏',value: Math.round(Math.random() * 1000)},
+          {name: '浙江',value: Math.round(Math.random() * 1000)},
+          {name: '江西',value: Math.round(Math.random() * 1000)},
+          {name: '湖北',value: Math.round(Math.random() * 1000)},
+          {name: '广西',value: Math.round(Math.random() * 1000)},
+          {name: '甘肃',value: Math.round(Math.random() * 1000)},
+          {name: '山西',value: Math.round(Math.random() * 1000)},
+          {name: '内蒙古',value: Math.round(Math.random() * 1000)},
+          {name: '陕西',value: Math.round(Math.random() * 1000)},
+          {name: '吉林',value: Math.round(Math.random() * 1000)},
+          {name: '福建',value: Math.round(Math.random() * 1000)},
+          {name: '贵州',value: Math.round(Math.random() * 1000)},
+          {name: '广东',value: Math.round(Math.random() * 1000)},
+          {name: '青海',value: Math.round(Math.random() * 1000)},
+          {name: '西藏',value: Math.round(Math.random() * 1000)},
+          {name: '四川',value: Math.round(Math.random() * 1000)},
+          {name: '宁夏',value: Math.round(Math.random() * 1000)},
+          {name: '海南',value: Math.round(Math.random() * 1000)},
+          {name: '台湾',value: Math.round(Math.random() * 1000)},
+          {name: '香港',value: Math.round(Math.random() * 1000)},
+          {name: '澳门',value: Math.round(Math.random() * 1000)}
+        ]
       },
-//
+      {
+        name: '晚上',
+        type: 'map',
+        mapType: 'china',
+        itemStyle:{
+          normal:{label:{show:true}},
+          emphasis:{label:{show:true}}
+        },
+        data:[
+          {name: '北京',value: Math.round(Math.random() * 1000)},
+          {name: '天津',value: Math.round(Math.random() * 1000)},
+          {name: '上海',value: Math.round(Math.random() * 1000)},
+          {name: '重庆',value: Math.round(Math.random() * 1000)},
+          {name: '河北',value: Math.round(Math.random() * 1000)},
+          {name: '安徽',value: Math.round(Math.random() * 1000)},
+          {name: '新疆',value: Math.round(Math.random() * 1000)},
+          {name: '浙江',value: Math.round(Math.random() * 1000)},
+          {name: '江西',value: Math.round(Math.random() * 1000)},
+          {name: '山西',value: Math.round(Math.random() * 1000)},
+          {name: '内蒙古',value: Math.round(Math.random() * 1000)},
+          {name: '吉林',value: Math.round(Math.random() * 1000)},
+          {name: '福建',value: Math.round(Math.random() * 1000)},
+          {name: '广东',value: Math.round(Math.random() * 1000)},
+          {name: '西藏',value: Math.round(Math.random() * 1000)},
+          {name: '四川',value: Math.round(Math.random() * 1000)},
+          {name: '宁夏',value: Math.round(Math.random() * 1000)},
+          {name: '香港',value: Math.round(Math.random() * 1000)},
+          {name: '澳门',value: Math.round(Math.random() * 1000)}
+        ]
+      }
     ]
   }
 }
 
-export function mockBarData() {
-  let barData = []
-  const reProvinces = provinces
-//const d1 = [1885,870,447,135,88,83,8]
-  const d2 = [1885,870,447,135,88,83,8].reverse()
-//const d2 = [1365,800,405,126,87,82,4]
-  const d1 = [1365,800,405,126,87,82,4].reverse()
-  const types = ['数字电视用户数(万户)','有线电视用户数(万户)']
-  for (let j = 0; j < types.length; j++) {
-    let d = []
-    for (let k = 0; k < reProvinces.length; k++) {
-      d.push(j === 0 ? d1[k] : d2[k])
-    }
+export function mockLineData(region='全国',time) {
 
-    barData.push({
-      name: types[j],
-      type:'bar',
-      stack: '总量',
-//    itemStyle : { normal: {label : {show: true, position: j === 0 ? 'insideLeft' : 'insideLeft'}} },
-      itemStyle : {
-        normal: {
-          label : {
-            show: true,
-            position: j === 0 ? 'insideRight' : 'right',
-            textStyle: {
-              color: '#FFF',
-              fontFamily: '黑体'
-            }
-          }
+  let data = []
+  for (let i = 0; i < 7; i++) {
+    data.push(Math.ceil(Math.random()*20))
+  }
+
+  return {
+    title: {
+      text: region + time + '一周投诉情况',
+      subtext: time === '白天' ? '主题动态切换效果' : '加载过渡效果'
+    },
+    tooltip: {
+      trigger: 'axis'
+    },
+    legend: {
+      show: false,
+      data:[time]
+    },
+    toolbox: {
+      show: true,
+      feature: {
+        dataZoom: {},
+        dataView: {readOnly: false},
+        magicType: {type: ['line', 'bar']},
+        restore: {},
+        saveAsImage: {}
+      }
+    },
+    xAxis:  {
+      type: 'category',
+      boundaryGap: false,
+      data: ['周一','周二','周三','周四','周五','周六','周日']
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: {
+        formatter: '{value} 件'
+      }
+    },
+    series: [
+      {
+        name:time,
+        type:'line',
+        data,
+        markPoint: {
+          data: [
+            {type: 'max', name: '最大值'},
+            {type: 'min', name: '最小值'}
+          ]
+        },
+        markLine: {
+          data: [
+            {type: 'average', name: '平均值'}
+          ]
         }
       },
-      barWidth: 14,
-//    barGap: '40%',
-//    barCategoryGap: '40%',
-      data:d
-    })
-  }
-  return {
-    color: ['#396cbd','#c94638'],
-
-    legend: {
-//    show: false,
-      data:['数字电视用户数(万户)','有线电视用户数(万户)'],
-//    y: 'top',
-//    x: 'center',
-//    itemHeight: 20,
-//    itemWidth: 25,
-      selectedMode: false,
-      textStyle: {
-        color: '#5fa4d9',
-        fontSize: 13,
-        fontFamily: '黑体'
-      },
-      top: 10,
-    },
-    grid: {
-      left: 50,
-//    right: '4%',
-      bottom: '4%',
-      top: 40,
-//    containLabel: true
-    },
-    xAxis : [
-      {
-//      type : 'value',
-        type : 'log',
-        axisLine: {
-          show: false,
-          lineStyle: {
-            color: 'rgba(255,255,255,0.8)',
-          }
-        },
-        axisTick: {
-          show: false,
-          lineStyle: {
-            color: 'rgba(255,255,255,0.8)',
-          }
-        },
-        axisLabel: {
-          show: false,
-          textStyle: {
-            color: '#314656',
-          }
-        },
-        splitLine: {
-          show: false,
-        },
-      }
-    ],
-    yAxis : [
-      {
-        type : 'category',
-//      data : provinces,
-        data : provinces.reverse(),
-        axisLine: {
-          show: false,
-          lineStyle: {
-            color: 'rgba(255,255,255,0.8)',
-          }
-        },
-        axisTick: {
-          show: false,
-          lineStyle: {
-            color: 'rgba(255,255,255,0.8)',
-          }
-        },
-        axisLabel: {
-          right: 20,
-          textStyle: {
-            color: '#5fa4d9',
-            fontSize: 13,
-            fontFamily: '黑体'
-          },
-        },
-        splitLine: {
-          show: false,
-        },
-      }
-    ],
-    series : barData
+    ]
   }
 }
 

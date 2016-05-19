@@ -35,11 +35,7 @@ class App extends React.Component {
         <div style={styles.content}>
           { this.props.children }
         </div>
-        {
-          this.state.module !== 'home'
-            ? <Footer text='© 2016 All Rights Reserved 版权所有'/>
-            : null
-        }
+        <Footer text='© 2016 All Rights Reserved 版权所有'/>
       </div>
     )
   }
